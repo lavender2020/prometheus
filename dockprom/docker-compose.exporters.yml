@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+
+  nodeexporter:
+    image: dockerhub.yeshj.com/monitor/node-exporter:0.14.0
+    container_name: nodeexporter
+    restart: unless-stopped
+    ports:
+      - 9100:9100
+    network_mode: host
+    labels:
+      org.label-schema.group: "monitoring"
+
+  cadvisor:
+    image: dockerhub.yeshj.com/monitor/cadvisor:0.24.1
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    network_mode: host
+    labels:
+      org.label-schema.group: "monitoring"
+  
+
